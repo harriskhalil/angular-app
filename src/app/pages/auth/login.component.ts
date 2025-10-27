@@ -1,5 +1,5 @@
 import { Component, inject } from "@angular/core";
-import { FormWithErrors } from "../../shared/forms/form-with-errors.component";
+import { FormWithErrors } from "@shared/forms/form-with-errors.component";
 import { Validators , FormGroup , ReactiveFormsModule, FormBuilder } from "@angular/forms";
 import { NgClass } from "@angular/common";
 
