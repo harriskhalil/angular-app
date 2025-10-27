@@ -1,0 +1,36 @@
+<div [formGroup]= "form">
+    @for (field of fields; track field.name) 
+    {
+        <label for="field.name" class="block text-sm/6 font-medium text-gray-900 dark:text-gray-100 mt-5">{{field.label}}</label>
+        <div class="mt-2">
+            <input
+                [formControlName]="field.name" 
+                id="field.name" 
+                type="field.type" 
+                name="field.name" 
+                class="block w-full rounded-md bg-white px-3 py-1.5 text-base 
+                text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 
+                focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 
+                dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500 
+                dark:focus:outline-indigo-500" 
+            />
+        </div>
+
+        @if (form.get(field.name)?.invalid && (form.get(field.name)?.dirty || form.get(field.name)?.touched)) {
+            <div class="text-red-600 text-sm mt-1 space-y-1">
+                @if (form.get(field.name)?.hasError('required')) {
+                <div>{{ field.label }} is required.</div>
+                }
+                @if (form.get(field.name)?.hasError('email')) {
+                <div>Please enter a valid email address.</div>
+                }
+                @if (form.get(field.name)?.hasError('minlength')) {
+                <div>{{ field.label }} is too short.</div>
+                }
+                @if (form.get(field.name)?.hasError('maxlength')) {
+                <div>{{ field.label }} is too long.</div>
+                }
+            </div>
+        }
+    }
+</div>
