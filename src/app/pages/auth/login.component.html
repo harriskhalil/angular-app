@@ -1,4 +1,4 @@
-@let formInvalid = form.invalid || form.pristine;
+@let isFormInvalid = form.invalid || form.pristine;
 
 
 <div class="grid grid-cols-12 min-h-screen items-center overflow-hidden">
@@ -27,9 +27,9 @@
             
             <div>
               <button 
-                [disabled]="formInvalid" 
+                [disabled]="isFormInvalid" 
                 type="submit"
-                [ngClass]="formInvalid ? 'disabled:cursor-not-allowed' : ''"
+                [ngClass]="isFormInvalid ? 'disabled:cursor-not-allowed' : ''"
                 class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 
                 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 
                 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 
