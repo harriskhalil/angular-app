@@ -1,6 +1,9 @@
 import { CommonModule } from "@angular/common";
 import { Component, EventEmitter, inject, Input, Output } from "@angular/core";
-import {FormBuilder, FormGroup, ReactiveFormsModule, ValidatorFn} from '@angular/forms';
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import { ErrorStateMatcher } from '@angular/material/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, ValidatorFn, FormControl, FormGroupDirective, NgForm } from '@angular/forms';
 
 interface FieldConfig {
     name: string,
@@ -8,12 +11,18 @@ interface FieldConfig {
     type: string,
     validation: ValidatorFn[]
 }
+export class MyErrorStateMatcher implements ErrorStateMatcher {
+  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    const isSubmitted = form && form.submitted;
+    return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
+  }
+}
 
 @Component({
     selector:"form-with-errors",
     standalone:true,
     templateUrl:"./form-with-errors.component.html",
-    imports: [ReactiveFormsModule, CommonModule]
+    imports: [ReactiveFormsModule, CommonModule, MatFormFieldModule, MatInputModule]
 })
 export class FormWithErrors<T extends Record<string, any> = any> {
 
@@ -24,6 +33,7 @@ export class FormWithErrors<T extends Record<string, any> = any> {
     @Output() formReady = new EventEmitter<FormGroup>();
 
     public form!: FormGroup
+    public matcher = new MyErrorStateMatcher();
 
     private formBuilder: FormBuilder = inject(FormBuilder)
 
@@ -37,5 +47,20 @@ export class FormWithErrors<T extends Record<string, any> = any> {
         this.form.valueChanges.subscribe((value)=>{
             return this.modelChange.emit(value)
         })
+    }
+
+    getErrors(controlName: string): string[] {
+        const control = this.form.get(controlName);
+        return control && control.errors ? Object.keys(control.errors) : [];
+    }
+
+    getErrorMessage(label: string, errorKey: string, errorValue: any): string {
+        const messages: Record<string, string> = {
+            required: `${label} is required.`,
+            email: `Please enter a valid email address.`,
+            minlength: `${label} is too short. Minimum length is ${errorValue?.requiredLength}.`,
+            maxlength: `${label} is too long. Maximum length is ${errorValue?.requiredLength}.`
+        };
+        return messages[errorKey] || `${label} is invalid.`;
     }
 }
