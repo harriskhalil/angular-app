@@ -2,18 +2,17 @@ import { Component, inject } from "@angular/core";
 import { FormWithErrors } from "@shared/forms/form-with-errors.component";
 import { Validators , FormGroup , ReactiveFormsModule, FormBuilder } from "@angular/forms";
 import { NgClass } from "@angular/common";
+import { AuthService } from "@services/auth.service";
+import { LoginRequest } from "@services/users/user.interface"
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { SpinnerService } from "@services/spinner/spinner.service";
 
-
-interface User {
-    email: string,
-    password?: string,
-}
 
 @Component({
     selector:'auth-login',
     templateUrl: "./login.component.html",
     standalone:true,
-    imports: [FormWithErrors, ReactiveFormsModule, NgClass]
+    imports: [FormWithErrors, ReactiveFormsModule, NgClass, MatProgressSpinnerModule]
 })
 
 export class Login {
@@ -21,6 +20,8 @@ export class Login {
     public form!: FormGroup;
 
     private formBuilder = inject(FormBuilder);
+
+    private spinner = inject(SpinnerService);
 
     public fields = [
         {
@@ -37,18 +38,29 @@ export class Login {
         }
     ];
     
-    public user: User = {
+    public user: LoginRequest = {
         email:'',
         password:''
     };
 
 
-    onChange(event: User) {        
+    private authService =  inject(AuthService);
+
+    onChange(event: LoginRequest) {        
         this.user= event;
     }
 
-    login (){
-        console.log(this.user);  
+    login() {
+        this.spinner.show()
+        console.log(this.user);
+        // this.authService.login(this.user).subscribe({
+        //     next: (res) => {
+        //         console.log(res);
+        //     },
+        //     error: (res)=>{
+                
+        //     }
+        // })
     }
 
     ngOnInit() {
