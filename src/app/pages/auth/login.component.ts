@@ -3,7 +3,7 @@ import { FormWithErrors } from "@shared/forms/form-with-errors.component";
 import { Validators , FormGroup , ReactiveFormsModule, FormBuilder } from "@angular/forms";
 import { NgClass } from "@angular/common";
 import { AuthService } from "@services/auth/auth.service";
-import { LoginRequest, LoginResponse } from "@services/users/user.interface"
+import { LoginRequest, LoginResponse } from "@services/auth/auth.interface"
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { SpinnerService } from "@src/app/shared/services/spinner/spinner.service";
 import {SnackBarService} from '@shared/services/snackbar/sankbar.service';
