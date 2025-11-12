@@ -61,14 +61,14 @@ export class Login {
         this.authService.login(this.user).subscribe({
             next: (res: LoginResponse) => {
                 this.spinner.hide();
-                this.snackbar.success('LoggedIn Successfully');
+                this.snackbar.success('LoggedIn Successfully').show();
                 localStorage.setItem('access_token',res?.access_token)
                 localStorage.setItem('user',JSON.stringify(res?.user))
                 this.router.navigate(['/'])
             },
             error: (res)=> {                
                 this.spinner.hide();
-                this.snackbar.error(res.error.message);
+                this.snackbar.error(res.error.message).show();
             }
         })
     }
