@@ -68,12 +68,32 @@ export class Login {
             },
             error: (res)=> {                
                 this.spinner.hide();
-                this.snackbar.error(res.error.message).show();
+                
+                if (res.status === 400 && Array.isArray(res.error.message)) {
+                    this.setServerErrors(res.error.message);
+                }else{
+                    this.snackbar.error(res.error.message).show();
+                }
+
             }
         })
     }
 
     ngOnInit() {
         this.form =  this.formBuilder.group({});
+    }
+
+    private setServerErrors (messages:string[]) {
+        messages.forEach((msg)=>{
+            const fieldMatch = msg.match(/^\w+/);
+            if (fieldMatch) {
+                const field = fieldMatch[0];
+                const control = this.form.get(field);
+                if (control) {
+                    control.setErrors({ server: msg });
+                    control.markAsTouched();
+                }
+            }
+        })
     }
 }

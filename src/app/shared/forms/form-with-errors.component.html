@@ -10,9 +10,9 @@
                 [type]="field.type"
                 [errorStateMatcher]="matcher"
             />
-            @for (errorKey of getErrors(field.name); track $index) {
+            @for (error of getErrors(field.name); track $index) {
                 <mat-error>
-                {{ getErrorMessage(field.label, errorKey, form.get(field.name)?.errors?.[errorKey]) }}
+                {{ error.message }}
                 </mat-error>
             }
         </mat-form-field>

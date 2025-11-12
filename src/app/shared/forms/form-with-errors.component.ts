@@ -11,6 +11,10 @@ interface FieldConfig {
     type: string,
     validation: ValidatorFn[]
 }
+interface FieldError {
+    key: string;
+    message: string;
+}
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
     const isSubmitted = form && form.submitted;
@@ -49,12 +53,27 @@ export class FormWithErrors<T extends Record<string, any> = any> {
         })
     }
 
-    getErrors(controlName: string): string[] {
+    getErrors(controlName: string): FieldError[] {
         const control = this.form.get(controlName);
-        return control && control.errors ? Object.keys(control.errors) : [];
+        if (!control || !control.errors) return [];
+        
+        const errors: FieldError[] = [];
+
+        for (const key of Object.keys(control.errors)) {
+            if (key === 'server') {
+                errors.push({ key, message: control.errors[key] });
+            } else {
+                errors.push({
+                    key,
+                    message: this.getErrorMessage(controlName, key, control.errors[key])
+                });
+            }
+        }
+
+        return errors;
     }
 
-    getErrorMessage(label: string, errorKey: string, errorValue: any): string {
+    private getErrorMessage(label: string, errorKey: string, errorValue: any): string {
         const messages: Record<string, string> = {
             required: `${label} is required.`,
             email: `Please enter a valid email address.`,
