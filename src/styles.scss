@@ -44,3 +44,16 @@ body {
 @custom-variant dark (&:where(.dark, .dark *));
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.error-snackbar {
+  --mat-snack-bar-container-color: #fb2c36 !important;
+  --mat-snack-bar-supporting-text-color: white !important;
+}
+
+.success-snackbar {
+  --mat-snack-bar-container-color: #009966 !important;
+  --mat-snack-bar-supporting-text-color: white !important;
+}
+.mat-mdc-snack-bar-container .mat-mdc-button.mat-mdc-snack-bar-action:not(:disabled).mat-unthemed{
+  color: white !important;
+}

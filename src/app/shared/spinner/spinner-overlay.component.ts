@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
-import { SpinnerService } from '@services/spinner/spinner.service';
+import { SpinnerService } from '@src/app/shared/services/spinner/spinner.service';
 
 @Component({
   selector: 'app-spinner-overlay',

@@ -11,3 +11,7 @@ export type LoginRequest = Pick<User,'email'> & {
     password: string;
 }
 
+export interface LoginResponse {
+    user: User;
+    access_token: string;
+}
