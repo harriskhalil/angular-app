@@ -3,6 +3,7 @@ import { MainLayout } from './layouts/main-layout.component';
 import { Home } from './pages/home/home.component';
 import { AuthLayout } from './layouts/auth/auth-layout.component';
 import { Login } from './pages/auth/login.component';
+import { AuthGuard } from '@src/app/guards/auth-guard';
 
 export const routes: Routes = [
     {
@@ -11,7 +12,8 @@ export const routes: Routes = [
         children:[
             {
                 path:'',
-                component: Home
+                component: Home,
+                canActivate:[AuthGuard]
             }
         ]
     },
@@ -21,7 +23,8 @@ export const routes: Routes = [
         children:[
             {
                 path:'login',
-                component: Login
+                component: Login,
+                
             }
         ]
     }
