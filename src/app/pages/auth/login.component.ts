@@ -2,7 +2,7 @@ import { Component, inject } from "@angular/core";
 import { FormWithErrors } from "@shared/forms/form-with-errors.component";
 import { Validators , FormGroup , ReactiveFormsModule, FormBuilder } from "@angular/forms";
 import { NgClass } from "@angular/common";
-import { AuthService } from "@services/auth.service";
+import { AuthService } from "@services/auth/auth.service";
 import { LoginRequest, LoginResponse } from "@services/users/user.interface"
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { SpinnerService } from "@src/app/shared/services/spinner/spinner.service";
