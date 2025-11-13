@@ -1,8 +1,21 @@
-import {AfterViewInit, Component, ViewChild, Input, Output, EventEmitter} from '@angular/core';
+import {
+    AfterViewInit, 
+    Component, 
+    ViewChild, 
+    Input, 
+    Output, 
+    EventEmitter, 
+    TemplateRef,
+    QueryList,
+    ContentChildren,
+    AfterContentInit
+} from '@angular/core';
 import {MatPaginator, MatPaginatorModule, PageEvent} from '@angular/material/paginator';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
+import { CommonModule } from '@angular/common';
+import { ColumnTemplateDirective } from '@shared/directives/column-template-directive';
 
 
 export interface TableAction<T = any> {
@@ -16,9 +29,9 @@ export interface TableAction<T = any> {
 @Component({
   selector: 'data-table',
   templateUrl: './data.component.html',
-  imports: [MatTableModule, MatPaginatorModule, MatIconModule, MatButtonModule],
+  imports: [MatTableModule, MatPaginatorModule, MatIconModule, MatButtonModule, CommonModule],
 })
-export class DataTable implements AfterViewInit {
+export class DataTable implements AfterContentInit, AfterViewInit {
   @Input() columns: string[]= [];
   @Input() rows: Record<string, any>[]= [];
   @Input() actions: TableAction[] = [];
@@ -27,6 +40,10 @@ export class DataTable implements AfterViewInit {
 
   
   dataSource = new MatTableDataSource<any>([]);
+
+  columnTemplates: Record<string, TemplateRef<any>> = {};
+
+  @ContentChildren(ColumnTemplateDirective) templates!: QueryList<ColumnTemplateDirective>
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -37,6 +54,13 @@ export class DataTable implements AfterViewInit {
         this.pageChanged.emit(value);
     })
   }
+  
+  ngAfterContentInit(): void {
+    this.templates.forEach(tpl => {
+        this.columnTemplates[tpl.name] = tpl.template;
+    });
+  }
+
   ngOnChanges(){
     this.dataSource = new MatTableDataSource<any>(this.rows);
      if (this.actions?.length && !this.columns.includes('actions')) {

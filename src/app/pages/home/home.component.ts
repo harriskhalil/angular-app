@@ -1,19 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { DataTable } from '@src/app/shared/table/data.component';
+import { ColumnTemplateDirective } from '@shared/directives/column-template-directive';
 @Component({
     selector:'home',
     standalone:true,
     templateUrl:"./home.component.html",
-    imports:[DataTable]
+    imports: [DataTable, ColumnTemplateDirective]
 })
 export class Home {
     title= 'Home Component';
 
-    columns = [
+    columns :string []= [
         'position', 'name', 'weight', 'symbol'
     ]
-    rows: any = [
+    rows: Record<string, any>[] = [
         {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
         {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
         {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
@@ -56,12 +57,12 @@ export class Home {
         
     };
 
-    delete( row: any ){
+    delete( row: Record<string,any> ){
         console.log(row);
         
         console.log('delete action got called');
     }
-    edit( row: any ){
+    edit( row: Record<string,any> ){
         console.log(row);
         
         console.log('edit action got called');

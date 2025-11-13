@@ -6,5 +6,12 @@
         (pageChanged)="onPageChange($event)" 
         [actions]="actions"
     >
+    <ng-template [columnTemplate]="'position'" let-row="row">
+        {{row.position}}
+    </ng-template>
+
+    <ng-template [columnTemplate]="'name'" let-row="row">
+        {{row.name}}
+    </ng-template>
     </data-table>
 </section>
